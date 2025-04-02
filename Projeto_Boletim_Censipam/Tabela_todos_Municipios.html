@@ -42,6 +42,7 @@
     <!-- Define as metas do documento -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <title>Tabela Diária</title>
     <!-- Importa a biblioteca XLSX para gerar a planilha Excel -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -66,7 +67,7 @@
             text-align: center;
         }
         th {
-            background-color: #007BFF;
+            background-color:oklch(76.8% 0.233 130.85);
             color: white;
         }
         tr:nth-child(even) {
@@ -77,20 +78,20 @@
             margin: 20px auto;
             padding: 12px 20px;
             font-size: 16px;
-            background-color: #28a745;
+            background-color: oklch(76.8% 0.233 130.85);
             color: white;
             border: none;
             cursor: pointer;
             border-radius: 5px;
         }
         button:hover {
-            background-color: #218838;
+            background-color:oklch(76.8% 0.233 130.85);
         }
     </style>
 </head>
 <body>
     <!-- Define o conteúdo da página -->
-    <h2>Tabela Diária de Municípios</h2>
+    <h2 class="font-sans text-xl">Tabela Diária de Municípios</h2>
     <table id="dataTable">
         <thead>
             <tr>
