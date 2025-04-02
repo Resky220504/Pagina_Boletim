@@ -1,0 +1,178 @@
+<!-- 
+  Documentação do Código:
+
+  Este é um arquivo HTML que gera uma tabela diária de municípios com dados climáticos.
+  A tabela é gerada dinamicamente pelo JavaScript e pode ser baixada como uma planilha Excel.
+
+  Estrutura do Código:
+
+  1. Head: Define as metas do documento, incluindo o título, charset e viewport.
+  2. Style: Define os estilos CSS para a página, incluindo a fonte, cor de fundo e layout da tabela.
+  3. Body: Define o conteúdo da página, incluindo a tabela e o botão para baixar a planilha.
+  4. Script: Define as funções JavaScript para gerar a tabela e baixar a planilha.
+
+  Funções JavaScript:
+
+  1. generateTable(): Gera a tabela diária de municípios com dados climáticos.
+  2. downloadExcel(): Baixa a tabela como uma planilha Excel.
+
+  Variáveis e Constantes:
+
+  1. municipios: Array de strings que contém os nomes dos municípios.
+  2. tableBody: Elemento HTML que representa o corpo da tabela.
+  3. rowSpan: Número de linhas que a célula do município deve ocupar.
+  4. firstRow: Booleano que indica se é a primeira linha da tabela.
+  5. data: Objeto Date que representa a data atual.
+  6. dataFormatada: String que representa a data formatada.
+  7. row: Elemento HTML que representa uma linha da tabela.
+  8. municipioCell: Elemento HTML que representa a célula do município.
+  9. wb: Objeto que representa a planilha Excel.
+  10. ws: Objeto que representa a folha de trabalho da planilha Excel.
+  11. dataNome: String que representa o nome da planilha Excel.
+
+  Notas:
+
+  1. A tabela é gerada dinamicamente pelo JavaScript, portanto, não há necessidade de definir as linhas e células da tabela no HTML.
+  2. A planilha Excel é gerada usando a biblioteca XLSX.
+-->
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <!-- Define as metas do documento -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabela Diária</title>
+    <!-- Importa a biblioteca XLSX para gerar a planilha Excel -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <!-- Define os estilos CSS para a página -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            margin: 20px;
+        }
+        table {
+            width: 90%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background: rgb(177, 177, 177);
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #007BFF;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        button {
+            display: block;
+            margin: 20px auto;
+            padding: 12px 20px;
+            font-size: 16px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <!-- Define o conteúdo da página -->
+    <h2>Tabela Diária de Municípios</h2>
+    <table id="dataTable">
+        <thead>
+            <tr>
+                <th>Local</th>
+                <th>Data</th>
+                <th>Situação</th>
+                <th>Cobertura</th>
+                <th>Precipitação</th>
+                <th>TMín</th>
+                <th>TMáx</th>
+                <th>Umidade</th>
+                <th>Intensidade</th>
+                <th>Direção</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- A tabela é gerada dinamicamente pelo JavaScript -->
+        </tbody>
+    </table>
+    <!-- Botão para baixar a planilha Excel -->
+    <button onclick="downloadExcel()">Baixar Planilha</button>
+    <script>
+        function generateTable() {
+            const tableBody = document.querySelector("#dataTable tbody");
+            const municipios = [
+                "PORTO VELHO", "ARIQUEMES - ITAPUÃ-MACHADINHO", "GUAJARÁ - COSTA MARQUES-N. MAMORÉ", "JI PARANÁ - C NOVO-MIRANTE - GUAPORÉ - PRES. MÉDICI", 
+                "CACOAL - PIMENTA - ROLIM - A. A. PARECIS - STA LUZIA - NOVA BRASILÂNDIA - RONDÔNIA", "VILHENA", "CEREJEIRAS-CORUMBIARA - COLORADO", "TARAUACÁ", 
+                "CRUZEIRO DO SUL", "RIO BRANCO - ACRELÂNDIA", "BRASILÉIA - EPITACIOLÂNDIA", "SENA MADUREIRA", "CUIABÁ - NS LIVRAMENTO"
+            ];
+            
+            municipios.forEach(municipio => {
+            let firstRow = true;
+            for (let i = 1; i <= 3; i++) { 
+                let data = new Date();
+                data.setDate(data.getDate() + i); // Define os próximos 3 dias, sem incluir a data atual
+                let dataFormatada = data.toLocaleDateString("pt-BR");
+                
+                const row = document.createElement("tr");
+                if (firstRow) {
+                    const municipioCell = document.createElement("td");
+                    municipioCell.textContent = municipio;
+                    municipioCell.rowSpan = 3;
+                    municipioCell.style.verticalAlign = "middle";
+                    row.appendChild(municipioCell);
+                    firstRow = false;
+                }
+                    
+                    row.innerHTML += `
+                        <td>${dataFormatada}</td>
+                        <td><input type="text" style="text-align: center;" pattern="[0-9]+(\.[0-9]+)?\/[0-9]+(\.[0-9]+)?" title="Formato: 22,8/32"></td>
+                        <td><input type="text" style="text-align: center;" pattern="[0-9]+(\.[0-9]+)?\/[0-9]+(\.[0-9]+)?" title="Formato: 22,8/32"></td> 
+                        <td><input type ="int"</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    `;
+                    tableBody.appendChild(row);
+                }
+            });
+        }
+    
+
+        // Função para baixar a planilha Excel
+        function downloadExcel() {
+            // Cria uma nova planilha Excel
+            const wb = XLSX.utils.book_new();
+            // Cria uma nova folha de trabalho da planilha Excel
+            const ws = XLSX.utils.table_to_sheet(document.getElementById("dataTable"));
+            // Adiciona a folha de trabalho à planilha Excel
+            XLSX.utils.book_append_sheet(wb, ws, "Dados");
+            // Define a data atual
+            const hoje = new Date();
+            // Define o nome da planilha Excel
+            const dataNome = hoje.toLocaleDateString("pt-BR").replace(/\//g, "").slice(0, 8);
+            // Baixa a planilha Excel
+            XLSX.writeFile(wb, `${dataNome}.xlsx`);
+        }
+
+        // Chama a função para gerar a tabela diária de municípios
+        generateTable();
+        </script>
+    </body>
+</html>
